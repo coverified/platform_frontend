@@ -1,0 +1,13 @@
+# Allow CORS
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+# API redirects
+## Proxy requests to our own API
+[[redirects]]
+  from = "/api/*"
+  to = "https://gql.coverified.info/admin/api/:splat"
+  status = 200
+  force = true
