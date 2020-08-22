@@ -2,7 +2,7 @@
     import {client} from './common';
     import {setClient} from 'svelte-apollo';
     import Entries from './Entries.svelte';
-    import Story from './Story.svelte';
+    import StoryPlayer from './StoryPlayer.svelte';
     import TagSelect from './TagSelect.svelte';
     import TagButtons from './TagButtons.svelte';
 
@@ -22,7 +22,7 @@
     <br>
     <Entries tagFilter={selectedTag}/>
     <br>
-    <!--    <Story/>-->
+    <StoryPlayer/>
 </main>
 
 <style>
