@@ -5,10 +5,9 @@
     export let urls = [];
 </script>
 
-<StyleLoader url="https://cdn.ampproject.org/amp-story-player-v0.css"/>
-<ScriptLoader url="https://cdn.ampproject.org/amp-story-player-v0.js"/>
-
 {#if urls.length}
+    <StyleLoader url="https://cdn.ampproject.org/amp-story-player-v0.css"/>
+    <ScriptLoader url="https://cdn.ampproject.org/amp-story-player-v0.js"/>
     <amp-story-player>
         {#each urls as url}
             <a href={url}></a>
