@@ -9,7 +9,8 @@
         query: gql`
             {
                 allTags {
-                    name
+                    name,
+                    id
                 }
             }`
     });

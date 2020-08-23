@@ -1,18 +1,20 @@
 <script>
     import ScriptLoader from './ScriptLoader.svelte';
     import StyleLoader from './StyleLoader.svelte';
+
+    export let urls = [];
 </script>
 
 <StyleLoader url="https://cdn.ampproject.org/amp-story-player-v0.css"/>
 <ScriptLoader url="https://cdn.ampproject.org/amp-story-player-v0.js"/>
 
-<amp-story-player>
-    <a href="stories/pets.html"
-       style="--story-player-poster: url('./stories/assets/cover.jpg');"
-       class="story">
-        <span class="title">Joy of Pets</span>
-    </a>
-</amp-story-player>
+{#if urls.length}
+    <amp-story-player>
+        {#each urls as url}
+            <a href={url}></a>
+        {/each}
+    </amp-story-player>
+{/if}
 
 <style>
     amp-story-player {

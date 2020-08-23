@@ -12,7 +12,7 @@
                  ${tagFilter !== false ? `(
                      where: {
                          tags_some: {
-                            name : "${tagFilter}"
+                            id : "${tagFilter}"
                          }
                     }
                  )` : ''}

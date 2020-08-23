@@ -9,7 +9,8 @@
         query: gql`
             {
                 allTags {
-                    name
+                    name,
+                    id,
                 }
             }`
     });
@@ -24,7 +25,7 @@
         </option>
     {:then result}
         {#each result.data.allTags as item, index}
-            <option value={item.name}>
+            <option value={item.id}>
                 {item.name}
             </option>
         {:else}

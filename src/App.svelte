@@ -1,5 +1,5 @@
 <script>
-    import {client} from './common';
+    import {client, env, storyEndpoints} from './common';
     import {setClient} from 'svelte-apollo';
     import Entries from './Entries.svelte';
     import StoryPlayer from './StoryPlayer.svelte';
@@ -8,8 +8,10 @@
 
     let selectedTag = false;
 
+    $: urls = selectedTag ? [`${storyEndpoints[env]}/tag/${selectedTag}`] : [];
+
     const onClick = item => {
-        selectedTag = item.name;
+        selectedTag = item.id;
     }
 
     setClient(client);
@@ -22,7 +24,7 @@
     <br>
     <Entries tagFilter={selectedTag}/>
     <br>
-    <StoryPlayer/>
+    <StoryPlayer {urls}/>
 </main>
 
 <style>
