@@ -15,6 +15,8 @@
         border-radius: 0;
         font-weight: 500;
         padding: .6em 1.5em;
+        border-style: solid;
+        border-width: 2px;
 
         &:focus,
         &:hover {

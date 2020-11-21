@@ -4,6 +4,8 @@
     import {query} from 'svelte-apollo';
 
     export let selected = false;
+    export let textDefault = 'Schlagwort Filter';
+    export let textAll = 'Alle Schlagworte';
 
     const data = query(client, {
         query: gql`
@@ -15,10 +17,12 @@
             }`
     });
 </script>
-<select bind:value={selected}>
-    <option value={false} selected disabled>
-        Filter by tag
-    </option>
+<select class="{$$props.class}" bind:value={selected}>
+    {#if textDefault}
+        <option value={false} selected disabled>
+            {textDefault}
+        </option>
+    {/if}
     {#await $data}
         <option value={false} disabled>
             Loading...
@@ -33,9 +37,11 @@
                 No items found
             </option>
         {/each}
-        <option value={false}>
-            all tags
-        </option>
+        {#if textAll}
+            <option value={false}>
+                {textAll}
+            </option>
+        {/if}
     {:catch error}
         <option value={false} disabled>
             Error loading items: {error}
