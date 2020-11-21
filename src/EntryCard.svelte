@@ -1,18 +1,13 @@
 <script>
-    export let item;
+    import SourceName from './SourceName.svelte';
 
-    console.log(item);
+    export let item;
 </script>
 
 {#if item}
     <article>
         {#if item.source && item.source.name}
-            <header>
-                <svg role="presentation">
-                    <use xlink:href="#wika"></use>
-                </svg>
-                {item.source.name}
-            </header>
+            <SourceName name={item.source.name}/>
         {/if}
         <h1>
             {item.title}
