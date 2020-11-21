@@ -1,4 +1,5 @@
 <script>
+    import Tag from './Tag.svelte';
     import TagSelect from './TagSelect.svelte';
 
     import {gql} from 'apollo-boost';
@@ -26,9 +27,7 @@
 {:then result}
     <div class="tags">
         {#each result.data.allTags as item, index}
-            <button on:click|preventDefault={ () => typeof onClick === 'function' && onClick(item) }>
-                #{item.name}
-            </button>
+            <Tag onClick={ () => typeof onClick === 'function' && onClick(item) } name={item.name}/>
         {:else}
             <div class="no-result">
                 No items found

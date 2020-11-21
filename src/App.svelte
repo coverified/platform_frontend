@@ -5,15 +5,41 @@
     import Story from './Story.svelte';
     import TagSelect from './TagSelect.svelte';
     import TagButtons from './TagButtons.svelte';
+    import Layer from './Layer.svelte';
+    import Article from './Article.svelte';
 
     let selectedTag = false;
     let moreClicks = 0;
+    let layers = [];
 
     $: urls = selectedTag ? [`${storyEndpoints[env]}/tag/${selectedTag}`] : [];
     $: pageLoops = Array(moreClicks + 1);
 
     const onClick = item => {
         selectedTag = item.id;
+    }
+
+    const removeLayer = layer => {
+        const index = layers.indexOf(layer);
+
+        if(index !== -1) {
+            layers.splice(index, 1);
+            layers = [...layers]; // force new value
+        }
+    }
+
+    const clearLayers = () => {
+        layers = [];
+    }
+
+    const openEntry = id => {
+        layers = [
+            ...layers,
+            {
+                type: 'article',
+                id: id,
+            }
+        ]
     }
 
     setClient(client);
@@ -28,7 +54,7 @@
             Wissenskanal
         </h1>
     </header>
-    <Story/>
+    <Story {openEntry}/>
     <!--    TODO: refactor this to search UI-->
     <!--    <TagSelect bind:selected={selectedTag}/>-->
     <h2 class="arrow-indicator">
@@ -39,9 +65,16 @@
         Das bewegt Deutschland
     </h2>
     {#each pageLoops as _, i}
-        <Entries tagFilter={selectedTag} page={i}/>
+        <Entries tagFilter={selectedTag} page={i} {openEntry}/>
     {/each}
     <button on:click={()=>{moreClicks++}}>more</button>
+    {#each layers as layer}
+        <Layer onClose={()=>{removeLayer(layer)}} onClear={clearLayers}>
+            {#if layer.type === 'article'}
+                <Article id={layer.id}/>
+            {/if}
+        </Layer>
+    {/each}
 </main>
 
 <!--ICONS-->
@@ -52,10 +85,21 @@
               d="m22.8 1.6-5 14.5-3.7-9.9c-.5-1.2-1.9-1.9-3.1-1.4-.2.1-.4.1-.5.2-.5.2-.9.7-1 1.2l-3.3 9.8-1.6-4.5c-.5-1.2-1.9-1.9-3.1-1.4s-1.9 1.9-1.4 3.1l3.9 10.3c.4 1 1.4 1.6 2.4 1.5 1.1.1 2.1-.5 2.5-1.6l3.3-9.5 3.6 9.7c.4 1 1.4 1.6 2.4 1.5 1.1.1 2.1-.5 2.5-1.6l7.1-20.3c.4-1.2-.2-2.6-1.5-3-1.7-.5-3.1.2-3.5 1.4z"
               fill="#3f9" fill-rule="evenodd"/>
     </symbol>
+    <symbol id="close" viewBox="0 0 24 24" aria-labelledby="Schließen" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+    </symbol>
+    <symbol id="back" viewBox="0 0 24 24" aria-labelledby="Zurück" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline>
+    </symbol>
+    <symbol id="forward" viewBox="0 0 24 24" aria-labelledby="Gehe zu" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
+    </symbol>
+    <symbol id="search" viewBox="0 0 24 24" aria-labelledby="Suche" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </symbol>
 </svg>
 
 <style type="text/scss">
-    :host,
     main {
         --color-primary: #003366;
         --color-tag-bg: #f0f0f0;
@@ -66,6 +110,19 @@
         all: unset;
         font-size: 16px;
         color: var(--color-text);
+        box-sizing: border-box;
+        position: relative;
+        display: block;
+        max-height: 100%;
+        overflow: hidden;
+
+        * {
+            &,
+            &:before,
+            &:after {
+                box-sizing: inherit;
+            }
+        }
     }
 
     header {

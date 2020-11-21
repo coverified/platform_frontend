@@ -1,8 +1,10 @@
 <script>
     export let type = 'default';
+
+    export let onClick;
 </script>
 
-<button class={`btn btn--${type}`}>
+<button class={`btn btn--${type}`} on:click={onClick}>
     <slot></slot>
 </button>
 

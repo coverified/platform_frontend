@@ -10,6 +10,8 @@
     import SwiperCore, {Navigation, Pagination, A11y, Autoplay} from 'swiper';
     import {Swiper, SwiperSlide} from 'swiper/svelte';
 
+    export let openEntry;
+
     // install Swiper components
     SwiperCore.use([Navigation, Pagination, A11y, Autoplay]);
 
@@ -25,6 +27,7 @@
                       id,
                       name,
                     },
+                    id,
                     publishDate
                     title,
                 }
@@ -45,6 +48,7 @@
         --swiper-navigation-size: var(--story-padding);
 
         height: 75vh;
+        width: 100%;
         max-height: 32.8125rem;
     }
 
@@ -179,7 +183,6 @@
     }
 </style>
 
-
 {#await $data}
     <p>Loading...</p>
 {:then result}
@@ -202,7 +205,7 @@
                     <h1>
                         {item.title}
                     </h1>
-                    <Button>Artikel lesen</Button>
+                    <Button onClick={()=>{openEntry(item.id)}}>Artikel lesen</Button>
                 </article>
             </SwiperSlide>
         {/each}

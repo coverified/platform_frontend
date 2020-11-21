@@ -7,6 +7,7 @@
     export let tagFilter = false;
     export let limit = 6;
     export let page = 0;
+    export let openEntry;
 
     $: data = query(client, {
         query: gql`
@@ -32,6 +33,7 @@
                       id,
                       name,
                     },
+                    id,
                     title,
                 }
             }`
@@ -43,7 +45,7 @@
         <li>Loading...</li>
     {:then result}
         {#each result.data.allEntries as item, index}
-            <li>
+            <li on:click={()=>{openEntry(item.id)}}>
                 <EntryCard {item}/>
             </li>
         {:else}
@@ -73,5 +75,6 @@
         /*box-shadow: 0 .125rem .9375rem 0 rgba(0, 0, 0, .2);*/
         padding: .875rem .875rem .75rem .875rem;
         background-color: #fff;
+        cursor: pointer;
     }
 </style>

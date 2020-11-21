@@ -1,0 +1,95 @@
+<script>
+    import SourceName from './SourceName.svelte';
+    import Tag from './Tag.svelte';
+
+    import {gql} from 'apollo-boost';
+    import {client} from './common';
+    import {query} from 'svelte-apollo';
+
+    export let id;
+
+    $: data = query(client, {
+        query: gql`
+            {
+                Entry(
+                    where: {
+                        id: "${id}"
+                    }
+                ){
+                    source {
+                        id,
+                        name,
+                    },
+                    tags {
+                        id,
+                        name,
+                    },
+                    publishDate,
+                    id,
+                    title,
+                    content,
+                    url,
+                }
+            }`
+    });
+</script>
+
+<article>
+    {#await $data}
+        <p>Loading...</p>
+    {:then result}
+        {#if result.data.Entry.source && result.data.Entry.source.name}
+            <SourceName name={result.data.Entry.source.name}/>
+        {/if}
+        <h1>
+            {result.data.Entry.title}
+        </h1>
+        <!--        TODO: image-->
+        <p class="date">
+            {new Date(result.data.Entry.publishDate).toLocaleDateString()}
+        </p>
+        <p>
+            {result.data.Entry.content}
+        </p>
+        <footer>
+            {#each result.data.Entry.tags as tag, index}
+                <Tag name={tag.name}/>
+            {/each}
+            <p>
+                <a href={result.data.Entry.url} target="_blank" rel="noopener">
+                    <svg role="presentation">
+                        <use xlink:href="#forward"></use>
+                    </svg>
+                    {result.data.Entry.url}
+                </a>
+            </p>
+        </footer>
+    {:catch error}
+        <p>Error loading items: {error}</p>
+    {/await}
+</article>
+
+<style type="text/scss">
+    article {
+    }
+
+    .date {
+        font-size: .875rem;
+    }
+
+    a {
+        padding-left: 2.5em;
+        position: relative;
+
+        svg {
+            display: block;
+            width: 1.5em;
+            height: 1.5em;
+            vertical-align: middle;
+            color: #33ff99;
+            position: absolute;
+            left: .5em;
+            top: -.0875em;
+        }
+    }
+</style>
