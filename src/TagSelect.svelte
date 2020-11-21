@@ -10,7 +10,9 @@
     const data = query(client, {
         query: gql`
             {
-                allTags {
+                allTags(
+                     sortBy: name_ASC,
+                ) {
                     name,
                     id,
                 }
