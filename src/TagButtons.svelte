@@ -63,6 +63,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: left;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     }
 
     .tags__select__wrap {
@@ -70,14 +71,16 @@
         margin: .225rem .125rem .225rem auto;
 
         &:before {
-            content: '+';
+            content: '';
             position: absolute;
-            top: 45%;
+            top: 50%;
             left: 50%;
-            font-size: 1.5em;
-            line-height: 1;
+            width: 1.25em;
+            height: 1.25em;
             transform: translate(-50%, -50%);
             pointer-events: none;
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cline x1="12" y1="5" x2="12" y2="19"%3E%3C/line%3E%3Cline x1="5" y1="12" x2="19" y2="12"%3E%3C/line%3E%3C/svg%3E');
+            background-size: 100% 100%;
         }
     }
 
