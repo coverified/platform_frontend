@@ -6,7 +6,7 @@
     import {query} from 'svelte-apollo';
 
     export let onClick = null;
-    export let limit = 2;
+    export let limit = 7;
 
     const data = query(client, {
         query: gql`
