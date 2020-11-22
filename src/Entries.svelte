@@ -3,10 +3,12 @@
     import {client} from './common';
     import {query} from 'svelte-apollo';
     import EntryCard from './EntryCard.svelte';
+    import Loader from './Loader.svelte';
 
     export let tagFilter = false;
     export let limit = 6;
     export let page = 0;
+    export let title;
     export let openEntry;
 
     $: data = query(client, {
@@ -40,9 +42,14 @@
     });
 </script>
 
+{#if title}
+    <h1>
+        {title}
+    </h1>
+{/if}
 <ul>
     {#await $data}
-        <li>Loading...</li>
+        <Loader/>
     {:then result}
         {#each result.data.allEntries as item, index}
             <li on:click={()=>{openEntry(item.id)}}>
@@ -60,7 +67,7 @@
     ul {
         list-style: none;
         margin: 0;
-        padding: .75rem 0 0 0;
+        padding: .75rem 0;
         display: grid;
         grid-gap: .75rem;
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));

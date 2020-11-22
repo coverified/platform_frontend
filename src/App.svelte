@@ -42,6 +42,17 @@
         ]
     }
 
+    const openTag = ({title, id}) => {
+        layers = [
+            ...layers,
+            {
+                type: 'tag',
+                title: title,
+                id: id,
+            }
+        ]
+    }
+
     setClient(client);
 </script>
 
@@ -60,18 +71,21 @@
     <h2 class="arrow-indicator">
         Themen entdecken
     </h2>
-    <TagButtons onClick={onClick}/>
+    <TagButtons {openTag}/>
     <h2>
         Das bewegt Deutschland
     </h2>
     {#each pageLoops as _, i}
         <Entries tagFilter={selectedTag} page={i} {openEntry}/>
     {/each}
-    <button on:click={()=>{moreClicks++}}>more</button>
+<!--    <button on:click={()=>{moreClicks++}}>more</button>-->
     {#each layers as layer}
         <Layer onClose={()=>{removeLayer(layer)}} onClear={clearLayers}>
             {#if layer.type === 'article'}
-                <Article id={layer.id}/>
+                <Article id={layer.id} {openTag}/>
+            {/if}
+            {#if layer.type === 'tag'}
+                <Entries tagFilter={layer.id} title={layer.title} {openTag}/>
             {/if}
         </Layer>
     {/each}

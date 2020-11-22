@@ -1,12 +1,14 @@
 <script>
     import SourceName from './SourceName.svelte';
     import Tag from './Tag.svelte';
+    import Loader from './Loader.svelte';
 
     import {gql} from 'apollo-boost';
     import {client} from './common';
     import {query} from 'svelte-apollo';
 
     export let id;
+    export let openTag;
 
     $: data = query(client, {
         query: gql`
@@ -36,7 +38,7 @@
 
 <article>
     {#await $data}
-        <p>Loading...</p>
+        <Loader/>
     {:then result}
         {#if result.data.Entry.source && result.data.Entry.source.name}
             <SourceName name={result.data.Entry.source.name}/>
@@ -53,7 +55,7 @@
         </p>
         <footer>
             {#each result.data.Entry.tags as tag, index}
-                <Tag name={tag.name}/>
+                <Tag onClick={openTag} data={tag}/>
             {/each}
             <p>
                 <a href={result.data.Entry.url} target="_blank" rel="noopener">

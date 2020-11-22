@@ -1,13 +1,14 @@
 <script>
     import Tag from './Tag.svelte';
     import TagSelect from './TagSelect.svelte';
+    import Loader from './Loader.svelte';
 
     import {gql} from 'apollo-boost';
     import {client} from './common';
     import {query} from 'svelte-apollo';
 
-    export let onClick = null;
     export let limit = 7;
+    export let openTag;
 
     const data = query(client, {
         query: gql`
@@ -23,11 +24,11 @@
 </script>
 
 {#await $data}
-    Loading...
+    <Loader/>
 {:then result}
     <div class="tags">
         {#each result.data.allTags as item, index}
-            <Tag onClick={ () => typeof onClick === 'function' && onClick(item) } name={item.name}/>
+            <Tag onClick={openTag} data={item}/>
         {:else}
             <div class="no-result">
                 No items found

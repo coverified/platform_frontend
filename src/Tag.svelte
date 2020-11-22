@@ -1,11 +1,11 @@
 <script>
-    export let name = null;
+    export let data;
 
     export let onClick;
 </script>
 
-<button on:click={onClick}>
-    #{name}
+<button on:click={()=>{onClick({title: data.name, id: data.id})}}>
+    #{data.name}
 </button>
 
 <style type="text/scss">

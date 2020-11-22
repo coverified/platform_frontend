@@ -1,6 +1,7 @@
 <script>
     import SourceName from './SourceName.svelte';
     import Button from './Button.svelte';
+    import Loader from './Loader.svelte';
 
     import {gql} from 'apollo-boost';
     import {client} from './common';
@@ -184,7 +185,7 @@
 </style>
 
 {#await $data}
-    <p>Loading...</p>
+    <Loader/>
 {:then result}
     <Swiper
             class="story__container"
