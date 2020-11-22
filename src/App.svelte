@@ -11,13 +11,14 @@
     let selectedTag = false;
     let moreClicks = 0;
     let layers = [];
+    let layerClass = '';
 
     $: urls = selectedTag ? [`${storyEndpoints[env]}/tag/${selectedTag}`] : [];
     $: pageLoops = Array(moreClicks + 1);
 
     const onClick = item => {
         selectedTag = item.id;
-    }
+    };
 
     const removeLayer = layer => {
         const index = layers.indexOf(layer);
@@ -26,10 +27,17 @@
             layers.splice(index, 1);
             layers = [...layers]; // force new value
         }
-    }
+    };
+
+    const resetLayers = () => {
+        layers = [];
+        layerClass = '';
+    };
 
     const clearLayers = () => {
-        layers = [];
+        layerClass = 'closing';
+
+        return resetLayers;
     }
 
     const openEntry = id => {
@@ -40,7 +48,7 @@
                 id: id,
             }
         ]
-    }
+    };
 
     const openTag = ({title, id}) => {
         layers = [
@@ -51,7 +59,7 @@
                 id: id,
             }
         ]
-    }
+    };
 
     setClient(client);
 </script>
@@ -80,12 +88,12 @@
     {/each}
 <!--    <button on:click={()=>{moreClicks++}}>more</button>-->
     {#each layers as layer}
-        <Layer onClose={()=>{removeLayer(layer)}} onClear={clearLayers}>
+        <Layer onClose={()=>{removeLayer(layer)}} onClear={clearLayers} class={layerClass}>
             {#if layer.type === 'article'}
                 <Article id={layer.id} {openTag}/>
             {/if}
             {#if layer.type === 'tag'}
-                <Entries tagFilter={layer.id} title={layer.title} {openTag}/>
+                <Entries tagFilter={layer.id} title={layer.title} {openTag} {openEntry}/>
             {/if}
         </Layer>
     {/each}

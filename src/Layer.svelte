@@ -16,17 +16,21 @@
     }
 
     const onClearClick = () => {
-        closing = true;
+        let onAfterClearAnimation;
 
+        closing = true;
+        if (typeof onClear === 'function') {
+            onAfterClearAnimation = onClear();
+        }
         setTimeout(() => {
-            if (typeof onClear === 'function') {
-                onClear();
+            if (typeof onAfterClearAnimation === 'function') {
+                onAfterClearAnimation();
             }
         }, 250);
     }
 </script>
 
-<section class={`layer layer--${type} ${closing ? 'closing' : ''}`}>
+<section class={`layer layer--${type} ${$$props.class} ${closing ? 'closing' : ''}`}>
     <header>
         <button on:click={onBackClick}>
             <svg role="presentation">
