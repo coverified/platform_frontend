@@ -35,7 +35,7 @@
             </div>
         {/each}
         <div class="tags__select__wrap">
-            <TagSelect class="tags__select" textDefault={false} textAll={false}/>
+            <TagSelect class="tags__select" textDefault={' '} textAll={false} onChange={openTag}/>
         </div>
     </div>
 {:catch error}

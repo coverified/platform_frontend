@@ -3,6 +3,7 @@
     import {client} from './common';
     import {query} from 'svelte-apollo';
 
+    export let onChange;
     export let selected = false;
     export let textDefault = 'Schlagwort Filter';
     export let textAll = 'Alle Schlagworte';
@@ -19,7 +20,7 @@
             }`
     });
 </script>
-<select class="{$$props.class}" bind:value={selected}>
+<select class="{$$props.class}" bind:value={selected} on:change={selected => {onChange(selected)}}>
     {#if textDefault}
         <option value={false} selected disabled>
             {textDefault}

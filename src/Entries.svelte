@@ -8,7 +8,7 @@
     export let tagFilter = false;
     export let limit = 6;
     export let page = 0;
-    export let title;
+    export let title = false;
     export let openEntry;
 
     $: data = query(client, {
