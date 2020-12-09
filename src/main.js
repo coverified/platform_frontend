@@ -1,9 +1,20 @@
 import App from './App.svelte';
 
-const app = new App({
-	target: document.body,
-	props: {
-	},
-});
+class WiKa extends HTMLElement {
+    constructor() {
+        super();
 
-export default app;
+        const shadowRoot = this.attachShadow({mode: 'closed'});
+        const style = document.createElement('style');
+
+        style.textContent = `{{{###STYLES###}}}`;
+        shadowRoot.appendChild(style);
+
+        new App({
+            target: shadowRoot,
+            props: {},
+        });
+    }
+}
+
+customElements.define('coverified-wika', WiKa);

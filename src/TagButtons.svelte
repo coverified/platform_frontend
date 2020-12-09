@@ -44,26 +44,11 @@
 
 <style type="text/scss">
     .tags {
-        margin: .5rem -.125rem;
+        margin: .5rem 0;
+        padding: 0 .625rem;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-    }
-
-    button {
-        appearance: none;
-        border: 0;
-        background-color: var(--color-tag-bg);
-        font-size: .75rem;
-        padding: .5rem .75rem;
-        border-radius: 1.5rem;
-        margin: .225rem .125rem;
-        cursor: pointer;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-align: left;
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
     }
 
     .tags__select__wrap {

@@ -31,6 +31,9 @@
                     id,
                     publishDate
                     title,
+                    image {
+                      publicUrl,
+                    },
                 }
             }`
     });
@@ -88,6 +91,16 @@
         > * {
             z-index: 1;
         }
+    }
+
+    .story__page__img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 0;
     }
 
     .story__page__date {
@@ -196,6 +209,9 @@
     >
         {#each result.data.allEntries as item, index}
             <SwiperSlide class="story__page">
+                {#if item.image && item.image.publicUrl}
+                    <img class="story__page__img" src={item.image.publicUrl} alt={item.title}>
+                {/if}
                 <article>
                     <span class="story__page__date">
                         {new Date(item.publishDate).toLocaleDateString()}

@@ -93,8 +93,6 @@
     }
 
     main {
-        height: 100%;
-        width: 100%;
         overflow: auto;
         padding: 1.5rem 1rem;
     }

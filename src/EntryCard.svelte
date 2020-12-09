@@ -6,33 +6,36 @@
 
 {#if item}
     <article>
-        {#if item.source && item.source.name}
-            <SourceName name={item.source.name}/>
+        {#if item.image && item.image.publicUrl}
+            <img src={item.image.publicUrl} alt={item.title}>
         {/if}
-        <h1>
-            {item.title}
-        </h1>
-        <footer>
-            {#each item.tags as tag, index}
-                <button>
-                    #{tag.name}
-                </button>
-            {/each}
-        </footer>
+        <div class="content">
+            {#if item.source && item.source.name}
+                <SourceName name={item.source.name}/>
+            {/if}
+            <h1>
+                {item.title}
+            </h1>
+            <footer>
+                {#each item.tags as tag, index}
+                    <button>
+                        #{tag.name}
+                    </button>
+                {/each}
+            </footer>
+        </div>
     </article>
 {/if}
 
 <style>
-    article {
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
     }
 
-    header {
-        font-size: .75rem;
-    }
-
-    header svg {
-        height: .875rem;
-        width: .9375rem;
+    .content {
+        padding: var(--entry-padding);
     }
 
     h1 {

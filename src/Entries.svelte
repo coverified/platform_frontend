@@ -37,6 +37,9 @@
                     },
                     id,
                     title,
+                    image {
+                      publicUrl,
+                    },
                 }
             }`
     });
@@ -67,7 +70,7 @@
     ul {
         list-style: none;
         margin: 0;
-        padding: .75rem 0;
+        padding: .75rem .625rem;
         display: grid;
         grid-gap: .75rem;
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -77,11 +80,13 @@
     }
 
     li {
+        --entry-padding: .875rem .875rem .75rem .875rem;
+
         /*margin-bottom: .75rem;*/
         border-radius: .3125rem;
         /*box-shadow: 0 .125rem .9375rem 0 rgba(0, 0, 0, .2);*/
-        padding: .875rem .875rem .75rem .875rem;
         background-color: #fff;
         cursor: pointer;
+        overflow: hidden;
     }
 </style>

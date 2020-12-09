@@ -1,12 +1,18 @@
+const fs = require('fs');
+
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
 import livereload from 'rollup-plugin-livereload';
 import {terser} from 'rollup-plugin-terser';
 import preprocess from 'svelte-preprocess';
 import autoprefixer from 'autoprefixer';
 
 const production = !process.env.ROLLUP_WATCH;
+const buildPath = 'public/build';
+const buildJs = 'bundle.js';
+const buildCSS = 'bundle.css';
 
 export default {
     input: 'src/main.js',
@@ -14,7 +20,7 @@ export default {
         sourcemap: true,
         format: 'iife',
         name: 'app',
-        file: 'public/build/bundle.js',
+        file: `${buildPath}/${buildJs}`,
         globals: {
             'apollo-boost': '',
         },
@@ -33,7 +39,7 @@ export default {
             // we'll extract any component CSS out into
             // a separate file - better for performance
             css: css => {
-                css.write('public/build/bundle.css');
+                css.write(buildCSS);
             },
         }),
 
@@ -59,9 +65,14 @@ export default {
         // If we're building for production (npm run build
         // instead of npm run dev), minify
         production && terser(),
+
+        replace({
+            '{{{###STYLES###}}}': fs.readFileSync(`${buildPath}/${buildCSS}`, 'utf8'),
+            delimiters: ['', '']
+        }),
     ],
     watch: {
-        clearScreen: false,
+        clearScreen: true,
     },
 };
 

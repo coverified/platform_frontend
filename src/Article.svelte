@@ -31,6 +31,9 @@
                     title,
                     content,
                     url,
+                    image {
+                      publicUrl,
+                    },
                 }
             }`
     });
@@ -46,7 +49,9 @@
         <h1>
             {result.data.Entry.title}
         </h1>
-        <!--        TODO: image-->
+        {#if result.data.Entry.image && result.data.Entry.image.publicUrl}
+            <img src={result.data.Entry.image.publicUrl} alt={result.data.Entry.title}>
+        {/if}
         <p class="date">
             {new Date(result.data.Entry.publishDate).toLocaleDateString()}
         </p>
@@ -72,7 +77,11 @@
 </article>
 
 <style type="text/scss">
-    article {
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin-bottom: .75rem;
     }
 
     .date {
