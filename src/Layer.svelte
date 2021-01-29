@@ -50,10 +50,11 @@
 
 <style type="text/scss">
     .layer {
-        display: block;
-        top: 60px;
-        position: absolute;
-        height: calc(100% - 60px);
+        display: flex;
+        flex-direction: column;
+        top: 3.75rem;
+        position: fixed;
+        height: calc(100% - 3.75rem);
         width: 100%;
         background-color: #fff;
         z-index: 10;
@@ -71,7 +72,7 @@
 
     header {
         border-bottom: 1px solid rgba(0, 0, 0, .3);
-        padding: .33rem .66rem;
+        padding: .66rem .66rem;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -94,6 +95,7 @@
 
     main {
         overflow: auto;
+        max-height: 100%;
         padding: 1.5rem 1rem;
     }
 

@@ -64,7 +64,7 @@
     setClient(client);
 </script>
 
-<main>
+<main class={layers.length ? 'no-scroll' : ''}>
     <header>
         <svg role="presentation">
             <use xlink:href="#wika"></use>
@@ -138,16 +138,17 @@
         --color-text-muted: #677182;
         --color-text-on-primary: #ffffff;
         --max-height: calc(100vh - 10rem);
+        --offset: calc(.5rem + 2vw);
 
         all: unset;
         display: block;
         max-height: var(--max-height);
         overflow: hidden;
-        width: 100%;
+        width: calc(100vw - (2 * var(--offset)));
         max-width: 420px;
         position: fixed;
-        right: 2rem;
-        bottom: 2rem;
+        right: var(--offset);
+        bottom: var(--offset);
         filter: drop-shadow(0 .2rem 1rem rgba(0, 0, 0, .5));
         //box-shadow: 0 .2rem 1rem 0 rgba(0, 0, 0, .5);
         border-top-left-radius: 1rem;
@@ -160,7 +161,6 @@
         color: var(--color-text);
         box-sizing: border-box;
         position: relative;
-        display: block;
         height: 100%;
         width: 100%;
         max-height: var(--max-height);
@@ -173,6 +173,10 @@
             &:after {
                 box-sizing: inherit;
             }
+        }
+
+        &.no-scroll {
+            overflow: hidden;
         }
     }
 

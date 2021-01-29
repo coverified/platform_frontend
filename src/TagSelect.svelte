@@ -20,7 +20,7 @@
             }`
     });
 </script>
-<select class="{$$props.class}" bind:value={selected} on:change={selected => {onChange(selected)}}>
+<select class="{$$props.class}" bind:value={selected} on:blur={selected => {onChange(selected)}}>
     {#if textDefault}
         <option value={false} selected disabled>
             {textDefault}

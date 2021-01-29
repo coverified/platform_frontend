@@ -63,7 +63,7 @@
                 <Tag onClick={openTag} data={tag}/>
             {/each}
             <p>
-                <a href={result.data.Entry.url} target="_blank" rel="noopener">
+                <a class="link" href={result.data.Entry.url} target="_blank" rel="noopener">
                     <svg role="presentation">
                         <use xlink:href="#forward"></use>
                     </svg>
@@ -88,9 +88,15 @@
         font-size: .875rem;
     }
 
-    a {
+    .link {
         padding-left: 2.5em;
         position: relative;
+        display: block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: .875rem;
 
         svg {
             display: block;
