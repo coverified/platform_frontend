@@ -64,40 +64,59 @@
     setClient(client);
 </script>
 
-<main class={layers.length ? 'no-scroll' : ''}>
-    <header>
-        <svg role="presentation">
-            <use xlink:href="#wika"></use>
-        </svg>
-        <h1>
-            Wissenskanal
-        </h1>
-    </header>
-    <Story {openEntry}/>
-    <!--    TODO: refactor this to search UI-->
-    <!--    <TagSelect bind:selected={selectedTag}/>-->
-    <h2 class="arrow-indicator">
-        Themen entdecken
-    </h2>
-    <TagButtons {openTag}/>
-    <h2>
-        Das bewegt Deutschland
-    </h2>
-    {#each pageLoops as _, i}
-        <Entries tagFilter={selectedTag} page={i} {openEntry}/>
-    {/each}
-    <!--    <button on:click={()=>{moreClicks++}}>more</button>-->
-    {#each layers as layer}
-        <Layer onClose={()=>{removeLayer(layer)}} onClear={clearLayers} class={layerClass}>
-            {#if layer.type === 'article'}
-                <Article id={layer.id} {openTag}/>
-            {/if}
-            {#if layer.type === 'tag'}
-                <Entries tagFilter={layer.id} title={layer.title} {openTag} {openEntry}/>
-            {/if}
-        </Layer>
-    {/each}
-</main>
+<details class={layers.length ? 'no-scroll' : ''}>
+    <main>
+        <header>
+            <svg role="presentation">
+                <use xlink:href="#wika"></use>
+            </svg>
+            <h1>
+                Wissenskanal
+            </h1>
+        </header>
+        <Story {openEntry}/>
+        <!--    TODO: refactor this to search UI-->
+        <!--    <TagSelect bind:selected={selectedTag}/>-->
+        <h2 class="arrow-indicator">
+            Themen entdecken
+        </h2>
+        <TagButtons {openTag}/>
+        <h2>
+            Das bewegt Deutschland
+        </h2>
+        {#each pageLoops as _, i}
+            <Entries tagFilter={selectedTag} page={i} {openEntry}/>
+        {/each}
+        <!--    <button on:click={()=>{moreClicks++}}>more</button>-->
+        {#each layers as layer}
+            <Layer onClose={()=>{removeLayer(layer)}} onClear={clearLayers} class={layerClass}>
+                {#if layer.type === 'article'}
+                    <Article id={layer.id} {openTag}/>
+                {/if}
+                {#if layer.type === 'tag'}
+                    <Entries tagFilter={layer.id} title={layer.title} {openTag} {openEntry}/>
+                {/if}
+            </Layer>
+        {/each}
+    </main>
+    <summary>
+        <div>
+            <div class="wika">
+                <svg role="presentation">
+                    <use xlink:href="#wika"></use>
+                </svg>
+            </div>
+            <span class="visually-hidden">
+                WiKa - Wissenskanal
+            </span>
+            <div class="close">
+                <svg role="presentation">
+                    <use xlink:href="#close"></use>
+                </svg>
+            </div>
+        </div>
+    </summary>
+</details>
 
 <!--ICONS-->
 <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1"
@@ -138,46 +157,139 @@
         --color-text-muted: #677182;
         --color-text-on-primary: #ffffff;
         --max-height: calc(100vh - 10rem);
+        --max-width: 420px;
         --offset: calc(.5rem + 2vw);
 
         all: unset;
-        display: block;
         max-height: var(--max-height);
         overflow: hidden;
         width: calc(100vw - (2 * var(--offset)));
-        max-width: 420px;
+        max-width: var(--max-width);
         position: fixed;
         right: var(--offset);
         bottom: var(--offset);
         filter: drop-shadow(0 .2rem 1rem rgba(0, 0, 0, .5));
-        //box-shadow: 0 .2rem 1rem 0 rgba(0, 0, 0, .5);
+        display: flex;
+        flex-direction: column;
         border-top-left-radius: 1rem;
         border-bottom-right-radius: 1rem;
+        box-sizing: border-box;
+    }
+
+    :global(*),
+    :global(*:before),
+    :global(*:after) {
+        box-sizing: border-box;
+    }
+
+    details {
+        --color-primary: #003366;
+        --color-text-on-primary: #ffffff;
+        --max-height: calc(100vh - 10rem);
+        --offset: calc(0.5rem + 2vw);
+
+        width: calc(100vw - (2 * var(--offset)));
+        position: relative;
+        padding-bottom: 3.25rem;
         background-color: #fff;
+        max-width: 3.5rem;
+        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        margin-left: auto;
+        border-top-left-radius: 1rem;
+
+        > summary {
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            right: 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            border-top-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            z-index: 1;
+
+            > div {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                border-top-left-radius: 1rem;
+                border-bottom-right-radius: 1rem;
+
+                > .wika {
+                    padding: 0.75rem 0.875rem;
+                    background-color: var(--color-primary);
+                    color: var(--color-text-on-primary);
+                    border-top-left-radius: 1rem;
+                    border-bottom-right-radius: 1rem;
+                }
+
+                > .close {
+                    display: none;
+                    padding: 0.75rem 0.875rem;
+                }
+            }
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            svg {
+                height: 25px;
+                width: 27.8px;
+            }
+        }
+
+        &[open] {
+            max-width: var(--max-width);
+
+            > summary {
+                position: sticky;
+                top: 100%;
+                height: 0;
+                width: 100%;
+                overflow: visible;
+
+                > div {
+                    background-color: #fff;
+                    height: 3.25rem;
+
+                    > .close {
+                        display: block;
+                    }
+                }
+            }
+        }
     }
 
     main {
         font-size: 16px;
         color: var(--color-text);
-        box-sizing: border-box;
         position: relative;
         height: 100%;
         width: 100%;
-        max-height: var(--max-height);
+        max-height: 100%;
         max-width: 100%;
-        overflow: auto;
+    }
 
-        * {
-            &,
-            &:before,
-            &:after {
-                box-sizing: inherit;
-            }
-        }
+    .no-scroll {
+        overflow: hidden;
+    }
 
-        &.no-scroll {
-            overflow: hidden;
-        }
+    .visually-hidden {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important; // Fix for https://github.com/twbs/bootstrap/issues/25686
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
     }
 
     header {
