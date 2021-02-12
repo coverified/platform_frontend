@@ -3,8 +3,7 @@
     import Button from './Button.svelte';
     import Loader from './Loader.svelte';
 
-    import {gql} from 'apollo-boost';
-    import {client} from './common';
+    import {gql} from '@apollo/client';
     import {query} from 'svelte-apollo';
 
     // import Swiper core and required components
@@ -16,27 +15,24 @@
     // install Swiper components
     SwiperCore.use([Navigation, Pagination, A11y, Autoplay]);
 
-    $: data = query(client, {
-        query: gql`
-            {
-                allEntries(
-                     first: 5,
-                     sortBy: publishDate_DESC,
-                )
-                {
-                    source {
-                      id,
-                      name,
-                    },
-                    id,
-                    publishDate
-                    title,
-                    image {
-                      publicUrl,
-                    },
-                }
-            }`
-    });
+    const allEntries = query(gql`{
+        allEntries(
+             first: 5,
+             sortBy: publishDate_DESC,
+        )
+        {
+            source {
+              id,
+              name,
+            },
+            id,
+            publishDate
+            title,
+            image {
+              publicUrl,
+            },
+        }
+    }`);
 </script>
 
 <style type="text/scss" global>
@@ -197,9 +193,18 @@
     }
 </style>
 
-{#await $data}
+{#if $allEntries.loading}
     <Loader/>
-{:then result}
+{:else if $allEntries.error}
+    <p>
+        Error loading items :(
+    </p>
+    <pre>
+        <code>
+            {$allEntries.error.message}
+        </code>
+    </pre>
+{:else}
     <Swiper
             class="story__container"
             navigation
@@ -207,15 +212,15 @@
             touchReleaseOnEdges={true}
             pagination={{ clickable: true }}
     >
-        {#each result.data.allEntries as item, index}
+        {#each $allEntries.data.allEntries as item, index}
             <SwiperSlide class="story__page">
                 {#if item.image && item.image.publicUrl}
                     <img class="story__page__img" src={item.image.publicUrl} alt={item.title}>
                 {/if}
                 <article>
-                    <span class="story__page__date">
-                        {new Date(item.publishDate).toLocaleDateString()}
-                    </span>
+                        <span class="story__page__date">
+                            {new Date(item.publishDate).toLocaleDateString()}
+                        </span>
                     {#if item.source && item.source.name}
                         <SourceName name={item.source.name}/>
                     {/if}
@@ -227,6 +232,4 @@
             </SwiperSlide>
         {/each}
     </Swiper>
-{:catch error}
-    <p>Error loading items: {error}</p>
-{/await}
+{/if}

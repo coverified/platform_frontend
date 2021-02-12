@@ -1,6 +1,5 @@
 <script>
-    import {gql} from 'apollo-boost';
-    import {client} from './common';
+    import {gql} from '@apollo/client';
     import {query} from 'svelte-apollo';
     import EntryCard from './EntryCard.svelte';
     import Loader from './Loader.svelte';
@@ -11,38 +10,35 @@
     export let title = false;
     export let openEntry;
 
-    $: data = query(client, {
-        query: gql`
-            {
-                allEntries(
-                     first: ${limit},
-                     skip: ${limit * page},
-                     sortBy: publishDate_DESC,
-                     ${tagFilter !== false ? `
-                         where: {
-                             tags_some: {
-                                id : "${tagFilter}"
-                             }
-                        }
-                     ` : ''}
-                )
-                {
-                    source {
-                      id,
-                      name,
-                    },
-                    tags {
-                      id,
-                      name,
-                    },
-                    id,
-                    title,
-                    image {
-                      publicUrl,
-                    },
+    const allEntries = query(gql`{
+        allEntries(
+             first: ${limit},
+             skip: ${limit * page},
+             sortBy: publishDate_DESC,
+             ${tagFilter !== false ? `
+                 where: {
+                     tags_some: {
+                        id : "${tagFilter}"
+                     }
                 }
-            }`
-    });
+             ` : ''}
+        )
+        {
+            source {
+              id,
+              name,
+            },
+            tags {
+              id,
+              name,
+            },
+            id,
+            title,
+            image {
+              publicUrl,
+            },
+        }
+    }`);
 </script>
 
 {#if title}
@@ -51,19 +47,26 @@
     </h1>
 {/if}
 <ul>
-    {#await $data}
+    {#if $allEntries.loading}
         <Loader/>
-    {:then result}
-        {#each result.data.allEntries as item, index}
+    {:else if $allEntries.error}
+        <p>
+            Error loading items :(
+        </p>
+        <pre>
+            <code>
+                {$allEntries.error.message}
+            </code>
+        </pre>
+    {:else}
+        {#each $allEntries.data.allEntries as item, index}
             <li on:click={()=>{openEntry(item.id)}}>
                 <EntryCard {item}/>
             </li>
         {:else}
             <li>No items found</li>
         {/each}
-    {:catch error}
-        <li>Error loading items: {error}</li>
-    {/await}
+    {/if}
 </ul>
 
 <style>

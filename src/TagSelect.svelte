@@ -1,6 +1,5 @@
 <script>
-    import {gql} from 'apollo-boost';
-    import {client} from './common';
+    import {gql} from '@apollo/client';
     import {query} from 'svelte-apollo';
 
     export let onChange;
@@ -8,17 +7,14 @@
     export let textDefault = 'Schlagwort Filter';
     export let textAll = 'Alle Schlagworte';
 
-    const data = query(client, {
-        query: gql`
-            {
-                allTags(
-                     sortBy: name_ASC,
-                ) {
-                    name,
-                    id,
-                }
-            }`
-    });
+    const allTags = query(gql`{
+        allTags(
+             sortBy: name_ASC,
+        ) {
+            name,
+            id,
+        }
+    }`);
 </script>
 <select class="{$$props.class}" bind:value={selected} on:blur={selected => {onChange(selected)}}>
     {#if textDefault}
@@ -26,12 +22,17 @@
             {textDefault}
         </option>
     {/if}
-    {#await $data}
+
+    {#if $allTags.loading}
         <option value={false} disabled>
             Loading...
         </option>
-    {:then result}
-        {#each result.data.allTags as item, index}
+    {:else if $allTags.error}
+        <option value={false} disabled>
+            {$allTags.error.message}
+        </option>
+    {:else}
+        {#each $allTags.data.allTags as item, index}
             <option value={item.id}>
                 {item.name}
             </option>
@@ -45,9 +46,5 @@
                 {textAll}
             </option>
         {/if}
-    {:catch error}
-        <option value={false} disabled>
-            Error loading items: {error}
-        </option>
-    {/await}
+    {/if}
 </select>

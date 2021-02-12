@@ -3,31 +3,35 @@
     import TagSelect from './TagSelect.svelte';
     import Loader from './Loader.svelte';
 
-    import {gql} from 'apollo-boost';
-    import {client} from './common';
+    import {gql} from '@apollo/client';
     import {query} from 'svelte-apollo';
 
     export let limit = 7;
     export let openTag;
 
-    const data = query(client, {
-        query: gql`
-            {
-                allTags(
-                     first: ${limit},
-                ) {
-                    name,
-                    id
-                }
-            }`
-    });
+    const allTags = query(gql`{
+        allTags(
+             first: ${limit},
+        ) {
+            name,
+            id
+        }
+    }`);
 </script>
-
-{#await $data}
+{#if $allTags.loading}
     <Loader/>
-{:then result}
-    <div class="tags">
-        {#each result.data.allTags as item, index}
+{:else if $allTags.error}
+    <p>
+        Error loading items :(
+    </p>
+    <pre>
+        <code>
+            {$allTags.error.message}
+        </code>
+    </pre>
+{:else}
+    <div className="tags">
+        {#each $allTags.data.allTags as item}
             <Tag onClick={openTag} data={item}/>
         {:else}
             <div class="no-result">
@@ -38,9 +42,7 @@
             <TagSelect class="tags__select" textDefault={' '} textAll={false} onChange={openTag}/>
         </div>
     </div>
-{:catch error}
-    Error loading items: {error}
-{/await}
+{/if}
 
 <style type="text/scss">
     .tags {

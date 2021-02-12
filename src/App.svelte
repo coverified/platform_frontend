@@ -1,5 +1,6 @@
 <script>
-    import {client, env, storyEndpoints} from './common';
+    import {apiEndpionts, env, storyEndpoints} from './common';
+    import {ApolloClient, InMemoryCache} from '@apollo/client';
     import {setClient} from 'svelte-apollo';
     import Entries from './Entries.svelte';
     import Story from './Story.svelte';
@@ -60,6 +61,11 @@
             }
         ]
     };
+
+    const client = new ApolloClient({
+        uri: apiEndpionts[env],
+        cache: new InMemoryCache(),
+    });
 
     setClient(client);
 </script>

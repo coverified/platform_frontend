@@ -3,77 +3,80 @@
     import Tag from './Tag.svelte';
     import Loader from './Loader.svelte';
 
-    import {gql} from 'apollo-boost';
-    import {client} from './common';
+    import {gql} from '@apollo/client';
     import {query} from 'svelte-apollo';
 
     export let id;
     export let openTag;
 
-    $: data = query(client, {
-        query: gql`
-            {
-                Entry(
-                    where: {
-                        id: "${id}"
-                    }
-                ){
-                    source {
-                        id,
-                        name,
-                    },
-                    tags {
-                        id,
-                        name,
-                    },
-                    publishDate,
-                    id,
-                    title,
-                    content,
-                    url,
-                    image {
-                      publicUrl,
-                    },
-                }
-            }`
-    });
+    const entry = query(gql`{
+        Entry(
+            where: {
+                id: "${id}"
+            }
+        ){
+            source {
+                id,
+                name,
+            },
+            tags {
+                id,
+                name,
+            },
+            publishDate,
+            id,
+            title,
+            content,
+            url,
+            image {
+              publicUrl,
+            },
+        }
+    }`);
 </script>
 
 <article>
-    {#await $data}
+    {#if $entry.loading}
         <Loader/>
-    {:then result}
-        {#if result.data.Entry.source && result.data.Entry.source.name}
-            <SourceName name={result.data.Entry.source.name}/>
+    {:else if $entry.error}
+        <p>
+            Error loading data :(
+        </p>
+        <pre>
+            <code>
+                {$entry.error.message}
+            </code>
+        </pre>
+    {:else}
+        {#if $entry.data.Entry.source && $entry.data.Entry.source.name}
+            <SourceName name={$entry.data.Entry.source.name}/>
         {/if}
         <h1>
-            {result.data.Entry.title}
+            {$entry.data.Entry.title}
         </h1>
-        {#if result.data.Entry.image && result.data.Entry.image.publicUrl}
-            <img src={result.data.Entry.image.publicUrl} alt={result.data.Entry.title}>
+        {#if $entry.data.Entry.image && $entry.data.Entry.image.publicUrl}
+            <img src={$entry.data.Entry.image.publicUrl} alt={$entry.data.Entry.title}>
         {/if}
         <p class="date">
-            {new Date(result.data.Entry.publishDate).toLocaleDateString()}
+            {new Date($entry.data.Entry.publishDate).toLocaleDateString()}
         </p>
         <p>
-            {result.data.Entry.content}
+            {$entry.data.Entry.content}
         </p>
         <footer>
-            {#each result.data.Entry.tags as tag, index}
+            {#each $entry.data.Entry.tags as tag, index}
                 <Tag onClick={openTag} data={tag}/>
             {/each}
             <p>
-                <a class="link" href={result.data.Entry.url} target="_blank" rel="noopener">
+                <a class="link" href={$entry.data.Entry.url} target="_blank" rel="noopener">
                     <svg role="presentation">
                         <use xlink:href="#forward"></use>
                     </svg>
-                    {result.data.Entry.url}
+                    {$entry.data.Entry.url}
                 </a>
             </p>
         </footer>
-    {:catch error}
-        <p>Error loading items: {error}</p>
-    {/await}
+    {/if}
 </article>
 
 <style type="text/scss">
