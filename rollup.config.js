@@ -1,11 +1,12 @@
 const fs = require('fs');
 
 import svelte from 'rollup-plugin-svelte';
-import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import replace from '@rollup/plugin-replace';
+import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import {terser} from 'rollup-plugin-terser';
+import css from 'rollup-plugin-css-only';
+import replace from '@rollup/plugin-replace';
 import preprocess from 'svelte-preprocess';
 import autoprefixer from 'autoprefixer';
 
@@ -14,6 +15,31 @@ const buildPath = 'public/build';
 const buildJs = 'bundle.js';
 const buildCSS = 'bundle.css';
 
+function serve() {
+    let server;
+
+    function toExit() {
+        if (server) server.kill(0);
+    }
+
+    return {
+        writeBundle() {
+            if (server) return;
+            server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+                stdio: [
+                    'ignore',
+                    'inherit',
+                    'inherit',
+                ],
+                shell: true,
+            });
+
+            process.on('SIGTERM', toExit);
+            process.on('exit', toExit);
+        }
+    };
+}
+
 export default {
     input: 'src/main.js',
     output: {
@@ -21,9 +47,6 @@ export default {
         format: 'iife',
         name: 'app',
         file: `${buildPath}/${buildJs}`,
-        globals: {
-            'apollo-boost': '',
-        },
     },
     plugins: [
         svelte({
@@ -31,17 +54,17 @@ export default {
                 postcss: {
                     plugins: [
                         autoprefixer(),
-                    ]
+                    ],
                 },
             }),
-            // enable run-time checks when not in production
-            dev: !production,
-            // we'll extract any component CSS out into
-            // a separate file - better for performance
-            css: css => {
-                css.write(buildCSS);
+            compilerOptions: {
+                // enable run-time checks when not in production
+                dev: !production,
             },
         }),
+        // we'll extract any component CSS out into
+        // a separate file - better for performance
+        css({output: buildCSS}),
 
         // If you have external dependencies installed from
         // npm, you'll most likely need these plugins. In
@@ -68,27 +91,10 @@ export default {
 
         replace({
             '{{{###STYLES###}}}': fs.readFileSync(`${buildPath}/${buildCSS}`, 'utf8'),
-            delimiters: ['', '']
+            delimiters: ['', ''],
         }),
     ],
     watch: {
         clearScreen: true,
     },
 };
-
-function serve() {
-    let started = false;
-
-    return {
-        writeBundle() {
-            if (!started) {
-                started = true;
-
-                require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
-                    stdio: ['ignore', 'inherit', 'inherit'],
-                    shell: true,
-                });
-            }
-        }
-    };
-}
