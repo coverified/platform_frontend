@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "rollup -c",
+    "build": "touch public/build/bundle.css && rollup -c && rollup -c",
     "prod": "npm run build",
     "dev": "rollup -c -w",
     "watch": "npm run dev",
