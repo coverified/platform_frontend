@@ -90,7 +90,7 @@
             Das bewegt Deutschland
         </h2>
         {#each pageLoops as _, i}
-            <Entries tagFilter={selectedTag} page={i} {openEntry}/>
+            <Entries tagFilter={selectedTag ? [selectedTag] : false} page={i} {openEntry}/>
         {/each}
         <!--    <button on:click={()=>{moreClicks++}}>more</button>-->
         {#each layers as layer}
@@ -99,7 +99,7 @@
                     <Article id={layer.id} {openTag}/>
                 {/if}
                 {#if layer.type === 'tag'}
-                    <Entries tagFilter={layer.id} title={layer.title} {openTag} {openEntry}/>
+                    <Entries tagFilter={[layer.id]} title={layer.title} {openTag} {openEntry}/>
                 {/if}
             </Layer>
         {/each}
@@ -125,7 +125,7 @@
 
 <style type="text/scss">
     :global(:host) {
-        --color-primary: #003366;
+        --color-primary: #ff00ff;
         --color-tag-bg: #f0f0f0;
         --color-text: #011321;
         --color-text-muted: #677182;

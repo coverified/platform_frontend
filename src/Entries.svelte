@@ -18,7 +18,7 @@
              ${tagFilter !== false ? `
                  where: {
                      tags_some: {
-                        id : "${tagFilter}"
+                        id_in : ${JSON.stringify(tagFilter)}
                      }
                 }
              ` : ''}

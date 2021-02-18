@@ -1,4 +1,4 @@
-const fs = require('fs');
+const {execSync} = require('child_process');
 
 import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
@@ -14,6 +14,10 @@ const production = !process.env.ROLLUP_WATCH;
 const buildPath = 'public/build';
 const buildJs = 'bundle.js';
 const buildCSS = 'bundle.css';
+const webcomponents = [
+    'coverified-wika',
+    'coverified-topic',
+];
 
 function serve() {
     let server;
@@ -40,13 +44,21 @@ function serve() {
     };
 }
 
-export default {
-    input: 'src/main.js',
+// ensures directories and files are present
+function prepare() {
+    webcomponents.forEach(name => {
+        execSync(`mkdir -p public/build/${name}`);
+        execSync(`touch public/build/${name}/bundle.css`);
+    });
+}
+
+export default webcomponents.map((componentName, index) => ({
+    input: `src/${componentName}.js`,
     output: {
         sourcemap: true,
         format: 'iife',
         name: 'app',
-        file: `${buildPath}/${buildJs}`,
+        file: `${buildPath}/${componentName}/${buildJs}`,
     },
     plugins: [
         svelte({
@@ -62,6 +74,7 @@ export default {
                 dev: !production,
             },
         }),
+        prepare(),
         // we'll extract any component CSS out into
         // a separate file - better for performance
         css({output: buildCSS}),
@@ -90,11 +103,11 @@ export default {
         production && terser(),
 
         replace({
-            '{{{###STYLES###}}}': fs.readFileSync(`${buildPath}/${buildCSS}`, 'utf8'),
+            '{{{###STYLES###}}}': require('fs').readFileSync(`${buildPath}/${componentName}/${buildCSS}`, 'utf8'),
             delimiters: ['', ''],
         }),
     ],
     watch: {
         clearScreen: true,
     },
-};
+}));
