@@ -14,7 +14,18 @@
     let selected = false;
     let disableMore = false;
 
-    $: tagFilter = selected ? [selected] : [
+    const changeTagFilter = filter => {
+        moreClicks = -1;
+
+        setTimeout(()=>{
+            moreClicks = 0;
+            disableMore = false;
+        }, 1);
+
+        return filter;
+    }
+
+    $: tagFilter = selected ? [changeTagFilter(selected)] : [
         '206ecf19-5fea-4b0e-b45f-9a7091df0cdd',
         '5897c906-2e74-4a07-b271-c77c9475b590',
         '6ce6f250-04d0-4911-9be4-7c5dc9aca832',
@@ -28,7 +39,6 @@
 
 <section>
     <header>
-        {JSON.stringify(selected)}
         <TagSelect bind:selected/>
     </header>
     <main>
