@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from 'svelte';
+    import {onMount} from 'svelte';
     import SourceName from './SourceName.svelte';
     import Button from './Button.svelte';
     import Loader from './Loader.svelte';
