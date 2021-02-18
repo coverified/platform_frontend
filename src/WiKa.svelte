@@ -13,8 +13,8 @@
     let moreClicks = 0;
     let layers = [];
     let layerClass = '';
+    let open = false;
 
-    $: urls = selectedTag ? [`${storyEndpoints[env]}/tag/${selectedTag}`] : [];
     $: pageLoops = Array(moreClicks + 1);
 
     const onClick = item => {
@@ -70,7 +70,7 @@
     setClient(client);
 </script>
 
-<details class={layers.length ? 'no-scroll' : ''}>
+<details class={layers.length ? 'no-scroll' : ''} open={open}>
     <main>
         <header>
             <svg role="presentation">
@@ -80,7 +80,9 @@
                 Wissenskanal
             </h1>
         </header>
-        <Story {openEntry}/>
+        {#if open}
+            <Story {openEntry}/>
+        {/if}
         <!--    TODO: refactor this to search UI-->
         <!--    <TagSelect bind:selected={selectedTag}/>-->
         <h2 class="arrow-indicator">
@@ -105,7 +107,7 @@
             </Layer>
         {/each}
     </main>
-    <summary>
+    <summary on:click|preventDefault={()=>{open = !open}}>
         <div>
             <div class="wika">
                 <svg role="presentation">

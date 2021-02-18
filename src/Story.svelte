@@ -1,4 +1,5 @@
 <script>
+    import { onMount } from 'svelte';
     import SourceName from './SourceName.svelte';
     import Button from './Button.svelte';
     import Loader from './Loader.svelte';
@@ -11,6 +12,8 @@
     import {Swiper, SwiperSlide} from 'swiper/svelte';
 
     export let openEntry;
+
+    let startSwiper = false;
 
     // install Swiper components
     SwiperCore.use([Navigation, Pagination, A11y, Autoplay]);
@@ -33,6 +36,10 @@
             },
         }
     }`);
+
+    onMount(async () => {
+        startSwiper = true;
+    });
 </script>
 
 <style type="text/scss" global>
@@ -205,31 +212,33 @@
         </code>
     </pre>
 {:else}
-    <Swiper
-            class="story__container"
-            navigation
-            autoplay={{ delay: 5000 }}
-            touchReleaseOnEdges={true}
-            pagination={{ clickable: true }}
-    >
-        {#each $allEntries.data.allEntries as item, index}
-            <SwiperSlide class="story__page">
-                {#if item.image && item.image.publicUrl}
-                    <img class="story__page__img" src={item.image.publicUrl} alt={item.title}>
-                {/if}
-                <article>
-                        <span class="story__page__date">
-                            {new Date(item.publishDate).toLocaleDateString()}
-                        </span>
-                    {#if item.source && item.source.name}
-                        <SourceName name={item.source.name}/>
+    {#if startSwiper}
+        <Swiper
+                class="story__container"
+                navigation
+                autoplay={{ delay: 5000 }}
+                touchReleaseOnEdges={true}
+                pagination={{ clickable: true }}
+        >
+            {#each $allEntries.data.allEntries as item, index}
+                <SwiperSlide class="story__page">
+                    {#if item.image && item.image.publicUrl}
+                        <img class="story__page__img" src={item.image.publicUrl} alt={item.title}>
                     {/if}
-                    <h1>
-                        {item.title}
-                    </h1>
-                    <Button onClick={()=>{openEntry(item.id)}}>Artikel lesen</Button>
-                </article>
-            </SwiperSlide>
-        {/each}
-    </Swiper>
+                    <article>
+                            <span class="story__page__date">
+                                {new Date(item.publishDate).toLocaleDateString()}
+                            </span>
+                        {#if item.source && item.source.name}
+                            <SourceName name={item.source.name}/>
+                        {/if}
+                        <h1>
+                            {item.title}
+                        </h1>
+                        <Button onClick={()=>{openEntry(item.id)}}>Artikel lesen</Button>
+                    </article>
+                </SwiperSlide>
+            {/each}
+        </Swiper>
+    {/if}
 {/if}

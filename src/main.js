@@ -1,4 +1,4 @@
-import App from './App.svelte';
+import App from './WiKa.svelte';
 
 class WiKa extends HTMLElement {
     constructor() {
