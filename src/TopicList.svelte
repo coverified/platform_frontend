@@ -8,14 +8,18 @@
     // import Layer from './Layer.svelte';
     // import Article from './Article.svelte';
     import Icons from './Icons.svelte';
+    import TagSelect from './TagSelect.svelte';
 
     let moreClicks = 0;
+    let selected = false;
+    let disableMore = false;
 
+    $: tagFilter = selected ? [selected] : [
+        '206ecf19-5fea-4b0e-b45f-9a7091df0cdd',
+        '5897c906-2e74-4a07-b271-c77c9475b590',
+        '6ce6f250-04d0-4911-9be4-7c5dc9aca832',
+    ];
     $: pageLoops = Array(moreClicks + 1);
-
-    const openEntry = id => {
-        console.log(id);
-    };
 
     setClient(client);
 </script>
@@ -24,22 +28,22 @@
 
 <section>
     <header>
+        {JSON.stringify(selected)}
+        <TagSelect bind:selected/>
     </header>
     <main>
         {#each pageLoops as _, i}
             <Entries
-                    tagFilter={[
-                        '206ecf19-5fea-4b0e-b45f-9a7091df0cdd',
-                        '5897c906-2e74-4a07-b271-c77c9475b590',
-                        '6ce6f250-04d0-4911-9be4-7c5dc9aca832',
-                    ]}
-                    limit={12}
+                    limit={6}
                     page={i}
-                    {openEntry}
+                    directLink={true}
+                    {tagFilter}
+                    bind:disableMore
             />
         {/each}
     </main>
     <footer>
+        <button on:click={()=>{moreClicks++}} disabled={disableMore}>more</button>
     </footer>
 </section>
 

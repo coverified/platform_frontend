@@ -17,10 +17,6 @@
 
     $: pageLoops = Array(moreClicks + 1);
 
-    const onClick = item => {
-        selectedTag = item.id;
-    };
-
     const removeLayer = layer => {
         const index = layers.indexOf(layer);
 

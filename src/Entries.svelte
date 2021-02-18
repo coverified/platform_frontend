@@ -8,7 +8,16 @@
     export let limit = 6;
     export let page = 0;
     export let title = false;
-    export let openEntry;
+    export let openEntry = () => {};
+    export let disableMore;
+    export let directLink = false;
+
+    const checkMore = length => {
+        if (length < limit) {
+            disableMore = true;
+        }
+        return '';
+    }
 
     const allEntries = query(gql`{
         allEntries(
@@ -32,6 +41,7 @@
               id,
               name,
             },
+            url,
             id,
             title,
             image {
@@ -61,11 +71,18 @@
     {:else}
         {#each $allEntries.data.allEntries as item, index}
             <li on:click={()=>{openEntry(item.id)}}>
-                <EntryCard {item}/>
+                {#if directLink}
+                    <a href={item.url} target="_blank" rel="noopener">
+                        <EntryCard {item}/>
+                    </a>
+                {:else}
+                    <EntryCard {item}/>
+                {/if}
             </li>
         {:else}
             <li>No items found</li>
         {/each}
+        {checkMore($allEntries.data.allEntries.length)}
     {/if}
 </ul>
 
@@ -91,5 +108,10 @@
         background-color: #fff;
         cursor: pointer;
         overflow: hidden;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
     }
 </style>
