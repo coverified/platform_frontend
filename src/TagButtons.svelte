@@ -30,7 +30,7 @@
         </code>
     </pre>
 {:else}
-    <div className="tags">
+    <div class="tags">
         {#each $allTags.data.allTags as item}
             <Tag onClick={openTag} data={item}/>
         {:else}
