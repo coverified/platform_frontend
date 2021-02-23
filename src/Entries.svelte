@@ -44,6 +44,7 @@
             url,
             id,
             title,
+            content,
             image {
               publicUrl,
             },

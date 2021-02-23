@@ -2,6 +2,10 @@
     import SourceName from './SourceName.svelte';
 
     export let item;
+
+    const cutContentLength = (text, max = 200) => {
+        return text && text.length > max ? text.slice(0,max).split(' ').slice(0, -1).join(' ') : text
+    }
 </script>
 
 {#if item}
@@ -16,13 +20,9 @@
             <h1>
                 {item.title}
             </h1>
-            <footer>
-                {#each item.tags as tag, index}
-                    <button>
-                        #{tag.name}
-                    </button>
-                {/each}
-            </footer>
+            <p>
+                {cutContentLength(item.content)}...
+            </p>
         </div>
     </article>
 {/if}

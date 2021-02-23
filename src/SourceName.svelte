@@ -4,9 +4,6 @@
 
 {#if name}
     <header>
-        <svg role="presentation">
-            <use xlink:href="#wika"></use>
-        </svg>
         {name}
     </header>
 {/if}
