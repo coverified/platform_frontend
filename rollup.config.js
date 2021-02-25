@@ -47,9 +47,10 @@ function serve() {
 
 // ensures directories and files are present
 function prepare() {
-    webcomponents.forEach(name => {
-        execSync(`mkdir -p public/build/${name}`);
-        execSync(`touch public/build/${name}/bundle.css`);
+    webcomponents.forEach(componentName => {
+        execSync(`mkdir -p ${buildPath}/${componentName}`);
+        execSync(`touch ${buildPath}/${componentName}/${buildCSS}`);
+        execSync(`touch ${buildPath}/${componentName}/${buildJs}`);
     });
 }
 
