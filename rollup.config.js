@@ -1,4 +1,5 @@
 const {execSync} = require('child_process');
+const {writeFileSync, readFileSync} = require('fs');
 
 import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
@@ -77,7 +78,12 @@ export default webcomponents.map((componentName, index) => ({
         prepare(),
         // we'll extract any component CSS out into
         // a separate file - better for performance
-        css({output: buildCSS}),
+        css({
+            output: styles => {
+                writeFileSync(`${buildPath}/${componentName}/${buildCSS}`, styles);
+                writeFileSync(`${buildPath}/${componentName}/${buildJs}`, readFileSync(`${buildPath}/${componentName}/${buildJs}`, 'utf8').replace('{{{###STYLES###}}}', styles));
+            }
+        }),
 
         // If you have external dependencies installed from
         // npm, you'll most likely need these plugins. In
@@ -88,6 +94,7 @@ export default webcomponents.map((componentName, index) => ({
             browser: true,
             dedupe: ['svelte'],
         }),
+
         commonjs(),
 
         // In dev mode, call `npm run start` once
@@ -103,7 +110,7 @@ export default webcomponents.map((componentName, index) => ({
         production && terser(),
 
         replace({
-            '{{{###STYLES###}}}': require('fs').readFileSync(`${buildPath}/${componentName}/${buildCSS}`, 'utf8'),
+            '{{{###STYLES###}}}': readFileSync(`${buildPath}/${componentName}/${buildCSS}`, 'utf8'),
             delimiters: ['', ''],
         }),
     ],
