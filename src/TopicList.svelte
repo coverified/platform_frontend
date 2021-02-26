@@ -75,7 +75,7 @@
 
     ul {
         list-style: none;
-        margin: 0;
+        margin: 1rem 0;
         padding: 0 1.5rem;
         display: grid;
         grid-gap: 1.5rem;
