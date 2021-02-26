@@ -46,7 +46,6 @@
             <Entries
                     limit={6}
                     page={i}
-                    directLink={true}
                     {tagFilter}
                     bind:disableMore
             />

@@ -8,9 +8,7 @@
     export let limit = 6;
     export let page = 0;
     export let title = false;
-    export let openEntry = () => {};
     export let disableMore;
-    export let directLink = false;
 
     const checkMore = length => {
         if (length < limit) {
@@ -45,6 +43,7 @@
             id,
             title,
             content,
+            publishDate,
             image {
               publicUrl,
             },
@@ -71,15 +70,7 @@
         </pre>
     {:else}
         {#each $allEntries.data.allEntries as item, index}
-            <li on:click={()=>{openEntry(item.id)}}>
-                {#if directLink}
-                    <a href={item.url} target="_blank" rel="noopener">
-                        <EntryCard {item}/>
-                    </a>
-                {:else}
-                    <EntryCard {item}/>
-                {/if}
-            </li>
+            <EntryCard {item} open={page === 0 && index === 0}/>
         {:else}
             <li>No items found</li>
         {/each}
@@ -91,28 +82,9 @@
     ul {
         list-style: none;
         margin: 0;
-        padding: .75rem .625rem;
+        padding: 0;
         display: grid;
-        grid-gap: .75rem;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        /*column-count: 2;*/
-        /*column-gap: .75rem;*/
-        filter: drop-shadow(0 0 .42rem rgba(0, 0, 0, .2));
-    }
-
-    li {
-        --entry-padding: .875rem .875rem .75rem .875rem;
-
-        /*margin-bottom: .75rem;*/
-        border-radius: .3125rem;
-        /*box-shadow: 0 .125rem .9375rem 0 rgba(0, 0, 0, .2);*/
-        background-color: #fff;
-        cursor: pointer;
-        overflow: hidden;
-    }
-
-    a {
-        color: inherit;
-        text-decoration: none;
+        grid-gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     }
 </style>
