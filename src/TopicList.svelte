@@ -23,9 +23,9 @@
 
     $: tagFilter = changeTagFilter(selected);
     $: pageLoops = Array(moreClicks + 1);
-    
+
     setClient(client);
-    
+
     let options = {
         root: null,
         rootMargins: "0px",
@@ -35,11 +35,11 @@
     const more = () => {
         moreClicks++;
     };
-    
+
     let counter = 0;
 
     let moreBtnVisible = false
-    
+
     onMount(async () => {
         const observer = new IntersectionObserver(handleIntersect, options);
         observer.observe(document.querySelector('footer'));
@@ -78,7 +78,9 @@
     </main>
     <footer>
         {#if moreBtnVisible}
-            <button id="more-btn" on:click={()=>{moreClicks++; counter = 0}} disabled={disableMore}>Mehr anzeigen</button>
+            <button on:click={()=>{moreClicks++; counter = 0}} disabled={disableMore}>
+                Mehr anzeigen
+            </button>
         {/if}
     </footer>
 </section>
@@ -110,5 +112,22 @@
         display: grid;
         grid-gap: 1.5rem;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+
+    footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 3rem;
+    }
+
+    button {
+        padding: 8px 14px;
+        background-color: #bec5c9;
+        border: solid 1px #bec5c9;
+        font-size: 18px;
+        margin: 1rem;
+        border-radius: 3px;
+        cursor: pointer;
     }
 </style>

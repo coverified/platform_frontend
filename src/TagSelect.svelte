@@ -173,6 +173,7 @@
         font-size: 18px;
         margin: 0px 10px 10px 0;
         border-radius: 3px;
+        cursor: pointer;
     }
 
     .btn--active {
