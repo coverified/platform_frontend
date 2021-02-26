@@ -22,7 +22,7 @@
                     <use xlink:href="#article"></use>
                 </svg>
             {/if}
-            <div class="content">
+            <a class="content" href={item.url} target="_blank" rel="noopener" title={`Direkt zu "${item.title}"`}>
                 <h1>
                     {item.title}
                 </h1>
@@ -47,16 +47,14 @@
                     </p>
                 {/if}
                 {#if open}
-                    {#if item.url}
-                        <a href={item.url} target="_blank" rel="noopener">
-                            zum Artikel
-                            <svg role="presentation">
-                                <use xlink:href="#forward"></use>
-                            </svg>
-                        </a>
-                    {/if}
+                    <span class="link">
+                        zum Artikel
+                        <svg role="presentation">
+                            <use xlink:href="#forward"></use>
+                        </svg>
+                    </span>
                 {/if}
-            </div>
+            </a>
             <button on:click|preventDefault={()=>{open = !open}}>
                 weitere Informationen
                 <svg role="presentation">
@@ -100,7 +98,20 @@
     }
 
     .content {
+        display: block;
+        text-decoration: none;
+        color: #000;
         padding: .75rem 1.25rem 3rem 1.25rem;
+    }
+
+    .content:before {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 2.625rem);
+        left: 0;
+        top: 0;
     }
 
     h1 {
@@ -121,16 +132,14 @@
         margin-right: -.125rem;
     }
 
-    a {
+    .link {
         display: inline-block;
         padding: .75rem 2.5rem .75rem 1.5rem;
         border: solid 1px #a7a7a7;
-        text-decoration: none;
-        color: #000;
         position: relative;
     }
 
-    a svg {
+    .link svg {
         color: #0470ad;
         position: absolute;
         top: 50%;
@@ -141,8 +150,7 @@
         transition: .3s ease-out transform;
     }
 
-    a:focus svg,
-    a:hover svg {
+    .link:hover svg {
         transform: translate(.3em, -50%);
     }
 
@@ -157,6 +165,7 @@
         right: 0;
         bottom: 0;
         border: 0;
+        cursor: pointer;
     }
 
     button svg {
