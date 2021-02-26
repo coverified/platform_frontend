@@ -38,14 +38,16 @@
         <TagSelect bind:selected/>
     </header>
     <main>
-        {#each pageLoops as _, i}
-            <Entries
-                    limit={6}
-                    page={i}
-                    {tagFilter}
-                    bind:disableMore
-            />
-        {/each}
+        <ul>
+            {#each pageLoops as _, i}
+                <Entries
+                        limit={6}
+                        page={i}
+                        {tagFilter}
+                        bind:disableMore
+                />
+            {/each}
+        </ul>
     </main>
     <footer>
         <button on:click={()=>{moreClicks++}} disabled={disableMore}>more</button>
@@ -69,5 +71,14 @@
     :global(*:before),
     :global(*:after) {
         box-sizing: border-box;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0 1.5rem;
+        display: grid;
+        grid-gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     }
 </style>

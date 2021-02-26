@@ -129,6 +129,7 @@
         padding-right: 40px;
         color: #fff;
         margin-bottom: 0;
+        font-family: inherit;
 
         &:after {
             content: 'x';

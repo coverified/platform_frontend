@@ -71,7 +71,6 @@
     li {
         border-radius: .3125rem;
         background-color: #fff;
-        cursor: pointer;
         overflow: hidden;
         filter: drop-shadow(0 0 .42rem rgba(0, 0, 0, .15));
         position: relative;
