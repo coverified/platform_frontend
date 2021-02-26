@@ -2,11 +2,6 @@
     import {client} from './common';
     import {setClient} from 'svelte-apollo';
     import Entries from './Entries.svelte';
-    // import Story from './Story.svelte';
-    // import TagSelect from './TagSelect.svelte';
-    // import TagButtons from './TagButtons.svelte';
-    // import Layer from './Layer.svelte';
-    // import Article from './Article.svelte';
     import Icons from './Icons.svelte';
     import TagSelect from './TagSelect.svelte';
 
@@ -22,10 +17,10 @@
             disableMore = false;
         }, 1);
 
-        return filter;
+        return filter ? [filter] : [];
     }
 
-    $: tagFilter = selected ? [changeTagFilter(selected)] : false;
+    $: tagFilter = changeTagFilter(selected);
     $: pageLoops = Array(moreClicks + 1);
 
     setClient(client);

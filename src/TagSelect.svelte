@@ -1,11 +1,11 @@
 <script>
-    import {gql} from '@apollo/client'
-    import {query} from 'svelte-apollo'
+    import {gql} from '@apollo/client';
+    import {query} from 'svelte-apollo';
     import Loader from './Loader.svelte';
 
-    export let selected = false
-    export let textDefault = 'Schlagwort Filter'
-    export let textAll = 'Alle Schlagworte'
+    export let selected = false;
+    export let textDefault = 'Schlagwort Filter';
+    export let textAll = 'Alle Schlagworte';
 
     const changeSelectedTag = tagId => {
         if (tagId !== selected) {
@@ -22,13 +22,18 @@
                 id
             }
         }
-    `)
+    `);
 </script>
 
 <div class="search__container">
     <p class="text-muted">Suche</p>
     <div class="search__input">
-        <button class="btn btn--active">Digitalisierung</button>
+        <button class="btn btn--active">
+            Digitalisierung
+            <svg role="presentation">
+                <use xlink:href="#close"></use>
+            </svg>
+        </button>
     </div>
     <hr/>
     <div class="search__tags">
@@ -53,16 +58,38 @@
             </pre>
         {:else}
             {#each $allTags.data.allTags as item, index}
-                <button
-                        class={`btn${item.name === 'CoVerified' ? ' bg-primary' : ''}${item.id === selected ? ' btn--active' : ''}`}
-                        on:click={()=>{changeSelectedTag(item.id)}}
-                >
-                    {item.name}
-                </button>
+                {#if item.name !== 'CoVerified'}
+                    <button
+                            class={`btn${item.id === selected ? ' btn--active' : ''}`}
+                            on:click={()=>{changeSelectedTag(item.id)}}
+                    >
+                        {item.name}
+                        {#if item.id === selected}
+                            <svg role="presentation">
+                                <use xlink:href="#close"></use>
+                            </svg>
+                        {/if}
+                    </button>
+                {/if}
             {:else}
                 <p>
                     No items found
                 </p>
+            {/each}
+            {#each $allTags.data.allTags as item, index}
+                {#if item.name === 'CoVerified'}
+                    <button
+                            class={`btn bg-primary${item.id === selected ? ' btn--active' : ''}`}
+                            on:click={()=>{changeSelectedTag(item.id)}}
+                    >
+                        {item.name}
+                        {#if item.id === selected}
+                            <svg role="presentation">
+                                <use xlink:href="#close"></use>
+                            </svg>
+                        {/if}
+                    </button>
+                {/if}
             {/each}
         {/if}
     </div>
@@ -152,16 +179,18 @@
         position: relative;
         background-color: #0470ad;
         border: solid 1px #0470ad;
-        padding-right: 40px;
+        padding-right: 36px;
         color: #fff;
         margin-bottom: 0;
         font-family: inherit;
 
-        &:after {
-            content: 'x';
+        svg {
             position: absolute;
-            right: 0;
-            padding-right: 12px;
+            right: 12px;
+            top: 50%;
+            width: 18px;
+            height: 18px;
+            transform: translateY(-50%);
         }
     }
 
@@ -176,7 +205,6 @@
         font-size: 24px;
         letter-spacing: 0.53px;
         color: #000;
-        margin-bottom: 0;
         margin-top: 21px;
         margin-bottom: 28px;
     }

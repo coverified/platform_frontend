@@ -9,6 +9,11 @@
     export let page = 0;
     export let disableMore;
 
+    const coVerifiedTagIdS = [
+        'ddb440cf-ccbb-4780-a559-8e755cfb155d',
+        // TODO: add other ID as well
+    ];
+
     const checkMore = length => {
         if (length < limit) {
             disableMore = true;
@@ -18,16 +23,22 @@
 
     const allEntries = query(gql`{
         allEntries(
-             first: ${limit},
-             skip: ${limit * page},
-             sortBy: publishDate_DESC,
-             ${tagFilter !== false && tagFilter.length ? `
-                 where: {
-                     tags_some: {
-                        id_in : ${JSON.stringify(tagFilter)}
-                     }
-                }
-             ` : ''}
+            first: ${limit},
+            skip: ${limit * page},
+            sortBy: publishDate_DESC,
+            ${tagFilter && tagFilter.length ? `
+            where: {
+                AND: [
+                    { tags_some: { id_in : ${JSON.stringify(tagFilter)} } }
+                    ${!tagFilter.some(r => coVerifiedTagIdS.indexOf(r) >= 0) ? `{ tags_none: { id_in: ${JSON.stringify(coVerifiedTagIdS)} } }` : ''}
+                ]
+            }` : `
+            where: {
+                AND: [
+                    { tags_none: { id_in: ${JSON.stringify(coVerifiedTagIdS)} } }
+                ]
+            }
+            `}
         )
         {
             source {
