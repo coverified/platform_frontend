@@ -27,4 +27,8 @@
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
     </symbol>
+    <symbol id="article" viewBox="0 0 24 24" aria-labelledby="Artikel" fill="currentColor">
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+    </symbol>
 </svg>

@@ -22,7 +22,7 @@
              first: ${limit},
              skip: ${limit * page},
              sortBy: publishDate_DESC,
-             ${tagFilter !== false ? `
+             ${tagFilter !== false && tagFilter.length ? `
                  where: {
                      tags_some: {
                         id_in : ${JSON.stringify(tagFilter)}

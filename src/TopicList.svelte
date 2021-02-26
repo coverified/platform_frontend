@@ -25,11 +25,7 @@
         return filter;
     }
 
-    $: tagFilter = selected ? [changeTagFilter(selected)] : [
-        '206ecf19-5fea-4b0e-b45f-9a7091df0cdd',
-        '5897c906-2e74-4a07-b271-c77c9475b590',
-        '6ce6f250-04d0-4911-9be4-7c5dc9aca832',
-    ];
+    $: tagFilter = selected ? [changeTagFilter(selected)] : false;
     $: pageLoops = Array(moreClicks + 1);
 
     setClient(client);
@@ -66,6 +62,7 @@
 
         all: unset;
         box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
     }
 
     :global(*),

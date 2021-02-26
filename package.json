@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
-    "prod": "npm run build",
+    "prod": "npm run build && npm run build",
     "dev": "rollup -c -w",
     "watch": "npm run dev",
     "start": "sirv public"

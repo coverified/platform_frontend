@@ -3,8 +3,8 @@ import {ApolloClient, InMemoryCache} from '@apollo/client';
 export const env = window.location.hostname.endsWith('.docker') || window.location.hostname.endsWith('localhost') ? 'development' : 'production';
 
 export const apiEndpionts = window.__coverified_overrride_api_endpoints || {
-    development: 'https://embed.coverified.info/api',
-    production: 'https://embed.coverified.info/api',
+    development: 'https://gql.platform-fallback.coverified.info/admin/api',
+    production: 'https://gql.platform-fallback.coverified.info/admin/api',
 }
 
 export const client = new ApolloClient({

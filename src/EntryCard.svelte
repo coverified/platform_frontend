@@ -10,8 +10,17 @@
 {#if item}
     <li class={open ? 'open' : ''}>
         <article>
-            {#if item.image && item.image.publicUrl}
-                <img src={item.image.publicUrl} alt={item.title}>
+            {#if item.image?.publicUrl}
+                <div class="img">
+                    <img src={item.image.publicUrl} alt={item.title}>
+                    <svg role="presentation" class="entry-icon">
+                        <use xlink:href="#article"></use>
+                    </svg>
+                </div>
+            {:else}
+                <svg role="presentation" class="entry-icon">
+                    <use xlink:href="#article"></use>
+                </svg>
             {/if}
             <div class="content">
                 <h1>
@@ -39,7 +48,12 @@
                 {/if}
                 {#if open}
                     {#if item.url}
-                        <a href={item.url} target="_blank" rel="noopener">zum Artikel</a>
+                        <a href={item.url} target="_blank" rel="noopener">
+                            zum Artikel
+                            <svg role="presentation">
+                                <use xlink:href="#forward"></use>
+                            </svg>
+                        </a>
                     {/if}
                 {/if}
             </div>
@@ -56,8 +70,15 @@
         background-color: #fff;
         cursor: pointer;
         overflow: hidden;
-        filter: drop-shadow(0 0 .42rem rgba(0, 0, 0, .2));
+        filter: drop-shadow(0 0 .42rem rgba(0, 0, 0, .15));
         position: relative;
+    }
+
+    .entry-icon {
+        width: 1.625em;
+        height: 1.625em;
+        color: var(--color-text-muted);
+        margin: 1.25rem 1.25rem 0 1.25rem;
     }
 
     img {
@@ -67,19 +88,19 @@
     }
 
     .content {
-        padding: 2rem 1rem 3rem 1rem;
+        padding: .75rem 1.25rem 3rem 1.25rem;
     }
 
     h1 {
-        font-size: 2rem;
-        margin-top: .33em;
+        font-size: 1.625rem;
+        line-height: 1.125;
+        margin-top: 0;
         margin-bottom: .2em;
         word-break: break-word;
         hyphens: auto;
     }
 
     .meta {
-        font-size: 1.25rem;
         color: var(--color-text-muted);
     }
 
@@ -90,8 +111,27 @@
 
     a {
         display: inline-block;
-        padding: .75rem 1.25rem .75rem 1.5rem;
-        border: solid 1px #979797;
+        padding: .75rem 2.5rem .75rem 1.5rem;
+        border: solid 1px #a7a7a7;
+        text-decoration: none;
+        color: #000;
+        position: relative;
+    }
+
+    a svg {
+        color: #0470ad;
+        position: absolute;
+        top: 50%;
+        right: 1.125rem;
+        transform: translate(0, -50%);
+        width: 1.125em;
+        height: 1.125em;
+        transition: .3s ease-out transform;
+    }
+
+    a:focus svg,
+    a:hover svg {
+        transform: translate(.3em, -50%);
     }
 
     button {
@@ -105,5 +145,9 @@
         right: 0;
         bottom: 0;
         border: 0;
+    }
+
+    p {
+        line-height: 1.32;
     }
 </style>
