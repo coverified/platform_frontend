@@ -70,7 +70,7 @@
         </pre>
     {:else}
         {#each $allEntries.data.allEntries as item, index}
-            <EntryCard {item} open={page === 0 && index === 0}/>
+            <EntryCard {item}/>
         {:else}
             <li>No items found</li>
         {/each}
@@ -81,10 +81,10 @@
 <style>
     ul {
         list-style: none;
-        margin: 0;
+        margin: 0 0 1.5rem 0;
         padding: 0;
         display: grid;
         grid-gap: 1.5rem;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     }
 </style>

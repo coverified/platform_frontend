@@ -40,7 +40,7 @@
                 {#if item.content}
                     <p>
                         {#if open}
-                            {item.content}
+                            {cutContentLength(item.content, 420)}...
                         {:else}
                             {cutContentLength(item.content)}...
                         {/if}
@@ -59,6 +59,9 @@
             </div>
             <button on:click|preventDefault={()=>{open = !open}}>
                 weitere Informationen
+                <svg role="presentation">
+                    <use xlink:href="#chevron"></use>
+                </svg>
             </button>
         </article>
     </li>
@@ -81,10 +84,20 @@
         margin: 1.25rem 1.25rem 0 1.25rem;
     }
 
+    .img .entry-icon {
+        position: absolute;
+        left: 1.25rem;
+        top: 1.25rem;
+        color: #fff;
+        filter: drop-shadow(0 0 .23rem rgba(0, 0, 0, .15));
+        margin: 0;
+    }
+
     img {
         display: block;
         width: 100%;
         height: auto;
+        margin-bottom: .75rem;
     }
 
     .content {
@@ -145,6 +158,17 @@
         right: 0;
         bottom: 0;
         border: 0;
+    }
+
+    button svg {
+        color: #0470ad;
+        width: 1.42rem;
+        height: 1.42rem;
+        transition: .3s ease-out transform;
+    }
+
+    .open button svg {
+        transform: rotate(180deg);
     }
 
     p {
