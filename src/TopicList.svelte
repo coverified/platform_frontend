@@ -4,7 +4,7 @@
     import Entries from './Entries.svelte';
     import Icons from './Icons.svelte';
     import TagSelect from './TagSelect.svelte';
-    import { onMount } from 'svelte';
+    import {onMount} from 'svelte';
 
     let moreClicks = 0;
     let selected = false;
@@ -13,7 +13,7 @@
     const changeTagFilter = filter => {
         moreClicks = -1;
 
-        setTimeout(()=>{
+        setTimeout(() => {
             moreClicks = 0;
             disableMore = false;
         }, 1);
@@ -28,31 +28,32 @@
 
     let options = {
         root: null,
-        rootMargins: "0px",
+        rootMargins: '0px',
         threshold: 0.2
     };
 
     const more = () => {
-        moreClicks++;
+        if (!disableMore) {
+            moreClicks++;
+        }
     };
 
     let counter = 0;
-
-    let moreBtnVisible = false
+    let moreBtnVisible = false;
 
     onMount(async () => {
         const observer = new IntersectionObserver(handleIntersect, options);
         observer.observe(document.querySelector('footer'));
+
         function handleIntersect(entries) {
             if (counter < 3) {
-                if(entries[0].isIntersecting) {
-                    moreBtnVisible = false
+                if (entries[0].isIntersecting) {
+                    moreBtnVisible = false;
                     more();
                     counter++;
                 }
             } else {
-                moreBtnVisible = true
-                return;
+                moreBtnVisible = true;
             }
         }
     })
@@ -77,7 +78,7 @@
         </ul>
     </main>
     <footer>
-        {#if moreBtnVisible}
+        {#if moreBtnVisible && !disableMore}
             <button on:click={()=>{moreClicks++; counter = 0}} disabled={disableMore}>
                 Mehr anzeigen
             </button>
