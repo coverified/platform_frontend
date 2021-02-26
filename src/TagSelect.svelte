@@ -1,9 +1,19 @@
 <script>
-    import { gql } from '@apollo/client'
-    import { query } from 'svelte-apollo'
+    import {gql} from '@apollo/client'
+    import {query} from 'svelte-apollo'
+    import Loader from './Loader.svelte';
+
     export let selected = false
     export let textDefault = 'Schlagwort Filter'
     export let textAll = 'Alle Schlagworte'
+
+    const changeSelectedTag = tagId => {
+        if (tagId !== selected) {
+            selected = tagId;
+        } else {
+            selected = false;
+        }
+    };
 
     const allTags = query(gql`
         {
@@ -20,7 +30,7 @@
     <div class="search__input">
         <button class="btn btn--active">Digitalisierung</button>
     </div>
-    <hr />
+    <hr/>
     <div class="search__tags">
         <div class="search__tags-controls">
             <p class="text-primary active">Digitalisierung</p>
@@ -29,17 +39,32 @@
             <p>Ministerien</p>
         </div>
         <p class="filteroptionen">Filteroptionen +</p>
-        <button class="btn">5G Netze</button>
-        <button class="btn">Digitale Kompetenz</button>
-        <button class="btn">Digitalpolitik</button>
-        <button class="btn">Digitalisierung und Bildung</button>
-        <button class="btn">Digitale Transformation in der Wirtschaft</button>
-        <button class="btn">Künstliche Intelligenz</button>
-        <button class="btn">Industrie 4.0</button>
-        <button class="btn">Internet der Dinge</button>
-        <button class="btn">IT-Sicherheit</button>
-        <button class="btn">Start-Ups</button>
-        <button class="btn bg-primary">CoVerified</button>
+
+        {#if $allTags.loading}
+            <Loader/>
+        {:else if $allTags.error}
+            <p>
+                Error loading items :(
+            </p>
+            <pre>
+                <code>
+                    {$allTags.error.message}
+                </code>
+            </pre>
+        {:else}
+            {#each $allTags.data.allTags as item, index}
+                <button
+                        class={`btn${item.name === 'CoVerified' ? ' bg-primary' : ''}${item.id === selected ? ' btn--active' : ''}`}
+                        on:click={()=>{changeSelectedTag(item.id)}}
+                >
+                    {item.name}
+                </button>
+            {:else}
+                <p>
+                    No items found
+                </p>
+            {/each}
+        {/if}
     </div>
 </div>
 

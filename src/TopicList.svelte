@@ -71,11 +71,12 @@
     :global(*:before),
     :global(*:after) {
         box-sizing: border-box;
+        font-family: inherit;
     }
 
     ul {
         list-style: none;
-        margin: 1rem 0;
+        margin: 2.5rem 0;
         padding: 0 1.5rem;
         display: grid;
         grid-gap: 1.5rem;

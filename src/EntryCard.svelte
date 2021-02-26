@@ -3,7 +3,7 @@
     export let open = false;
 
     const cutContentLength = (text, max = 200) => {
-        return text && text.length > max ? text.slice(0, max).split(' ').slice(0, -1).join(' ') : text
+        return text && text.length > max ? text.slice(0, max).split(' ').slice(0, -1).join(' ') + '...' : text
     }
 </script>
 
@@ -40,9 +40,9 @@
                 {#if item.content}
                     <p>
                         {#if open}
-                            {cutContentLength(item.content, 420)}...
+                            {cutContentLength(item.content, 420)}
                         {:else}
-                            {cutContentLength(item.content)}...
+                            {cutContentLength(item.content)}
                         {/if}
                     </p>
                 {/if}
