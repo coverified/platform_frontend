@@ -182,4 +182,15 @@
     p {
         line-height: 1.32;
     }
+
+    @media (max-width: 992px) {
+        img {
+            margin-bottom: .5rem;
+        }
+
+        h1 {
+            font-size: 1.375rem;
+            line-height: 1.125;
+        }
+    }
 </style>

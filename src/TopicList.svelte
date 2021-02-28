@@ -131,4 +131,13 @@
         border-radius: 3px;
         cursor: pointer;
     }
+
+    @media (max-width: 992px) {
+        ul {
+            margin: 2rem 0;
+            padding: 0 1rem;
+            grid-gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        }
+    }
 </style>
