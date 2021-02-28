@@ -4,7 +4,7 @@ export const env = window.location.hostname.endsWith('.docker') || window.locati
 
 export const apiEndpionts = window.__coverified_overrride_api_endpoints || {
     development: 'http://coverified-backend-keystone.docker/admin/api',
-    production: 'https://gql.platform-fallback.coverified.info/admin/api',
+    production: 'https://gql.platform.coverified.info/admin/api',
 }
 
 export const client = new ApolloClient({
