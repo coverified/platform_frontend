@@ -1319,10 +1319,9 @@
         name: 'CoVerified',
         ids: [
             '0024a252-1951-408d-b44f-a6ea0615a278',
+            '7b8cd0f4-c9f7-4f59-a568-2f7477fecff2',
         ],
     });
-
-    console.log(mappedTags);
 
     export let selected = false;
     export let selectedIDs = false;

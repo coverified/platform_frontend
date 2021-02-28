@@ -12,6 +12,7 @@
     const coVerifiedTagIdS = [
         'ddb440cf-ccbb-4780-a559-8e755cfb155d',
         '0024a252-1951-408d-b44f-a6ea0615a278',
+        '7b8cd0f4-c9f7-4f59-a568-2f7477fecff2',
     ];
 
     const checkMore = length => {
