@@ -11,7 +11,7 @@
 
     const coVerifiedTagIdS = [
         'ddb440cf-ccbb-4780-a559-8e755cfb155d',
-        // TODO: add other ID as well
+        '0024a252-1951-408d-b44f-a6ea0615a278',
     ];
 
     const checkMore = length => {

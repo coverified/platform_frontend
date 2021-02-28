@@ -7,7 +7,7 @@
     import {onMount} from 'svelte';
 
     let moreClicks = 0;
-    let selected = false;
+    let selectedIDs = false;
     let disableMore = false;
 
     const changeTagFilter = filter => {
@@ -18,10 +18,10 @@
             disableMore = false;
         }, 1);
 
-        return filter ? [filter] : [];
+        return filter ? filter : [];
     }
 
-    $: tagFilter = changeTagFilter(selected);
+    $: tagFilter = changeTagFilter(selectedIDs);
     $: pageLoops = Array(moreClicks + 1);
 
     setClient(client);
@@ -63,7 +63,7 @@
 
 <section>
     <header>
-        <TagSelect bind:selected/>
+        <TagSelect bind:selectedIDs/>
     </header>
     <main>
         <ul>
