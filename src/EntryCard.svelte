@@ -34,7 +34,15 @@
                         &nbsp;|&nbsp;
                     {/if}
                     {#if item.source?.name}
-                        {item.source.name}
+                        {#if item.source?.acronym}
+                            {#if open}
+                                {item.source.name}
+                            {:else}
+                                {item.source.acronym}
+                            {/if}
+                        {:else}
+                            {item.source.name}
+                        {/if}
                     {/if}
                 </p>
                 {#if item.content}

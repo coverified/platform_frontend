@@ -44,6 +44,7 @@
             source {
               id,
               name,
+              acronym,
             },
             tags {
               id,
