@@ -1351,7 +1351,7 @@
 <div class="search__container">
     <p class="text-muted">Suche</p>
     <div class="search__input">
-        <button class="btn btn--active">
+        <button class="btn btn--active mb-0" disabled>
             Digitalisierung
             <svg role="presentation">
                 <use xlink:href="#close"></use>
@@ -1419,6 +1419,10 @@
 </div>
 
 <style type="text/scss">
+    .mb-0 {
+        margin-bottom: 0 !important;
+    }
+
     .search {
         &__container {
             background-color: #eeeff1;
@@ -1505,7 +1509,6 @@
         border: solid 1px #0470ad;
         padding-right: 36px;
         color: #fff;
-        margin-bottom: 0;
         font-family: inherit;
 
         svg {
